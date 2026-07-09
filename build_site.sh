@@ -1,4 +1,5 @@
 #!/bin/bash
+shopt -s nullglob
 # AGPLv3.0
 # https://github.com/stashapp/CommunityScrapers/blob/master/LICENSE
 
@@ -77,11 +78,15 @@ buildScraper()
 }
 
 # find all yml files in ./scrapers - these are packages individually
-for f in ./scrapers/*.yml; do 
+shopt -s nullglob
+
+for f in ./scrapers/*.yml; do
+    echo "Building: $f"
     buildScraper "$f"
 done
 
-find ./scrapers/ -mindepth 2 -name *.yml -print0 | while read -d $'\0' f; do
+find ./scrapers/ -mindepth 2 -name "*.yml" -print0 | while read -d $'\0' f; do
+    echo "Building: $f"
     buildScraper "$f"
 done
 
