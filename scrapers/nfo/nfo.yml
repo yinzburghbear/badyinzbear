@@ -1,11 +1,10 @@
 name: "NFO Metadata Reader"
-# requires: py_common
 
 sceneByFragment:
   action: script
   script:
-      - python
-      - nfo.py
-      - sceneByFragment
-
+    - python
+    - nfo.py
+    - sceneByFragment
+# requires: py_common
 # Last Updated 7/9/2026
