@@ -21,3 +21,7 @@ venv/
 Thumbs.db
 
 myfanscrape.zip
+# 01 FanScraper local configuration and generated cache
+scrapers/01-fanscraper/config.json
+scrapers/01-fanscraper/cache/
+scrapers/01-fanscraper/cache.json
