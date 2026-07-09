@@ -4,7 +4,7 @@ sceneByFragment:
   script:
     - python
     # use python3 instead if needed
-    - fanscraper.py
+    - "01 FanScraper.py"
     - queryScene
 
 galleryByFragment:
@@ -12,7 +12,7 @@ galleryByFragment:
   script:
     - python
     # use python3 instead if needed
-    - fanscraper.py
+    - "01 FanScraper.py"
     - queryGallery
 
 imageByFragment:
@@ -20,7 +20,7 @@ imageByFragment:
   script:
     - python
     # use python3 instead if needed
-    - fanscraper.py
+    - "01 FanScraper.py"
     - queryImage
 
 # Last Updated on: 7/9/2026
