@@ -1,0 +1,26 @@
+name: 01 FanScraper
+sceneByFragment:
+  action: script
+  script:
+    - python
+    # use python3 instead if needed
+    - fanscraper.py
+    - queryScene
+
+galleryByFragment:
+  action: script
+  script:
+    - python
+    # use python3 instead if needed
+    - fanscraper.py
+    - queryGallery
+
+imageByFragment:
+  action: script
+  script:
+    - python
+    # use python3 instead if needed
+    - fanscraper.py
+    - queryImage
+
+# Last Updated on: 7/9/2026
