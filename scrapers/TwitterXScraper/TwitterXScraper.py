@@ -24,7 +24,7 @@ except ImportError:
             print(msg, file=sys.stderr)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-JSON_DIR = SCRIPT_DIR / "XJSON"
+JSON_DIR = SCRIPT_DIR / "TwitterXJSON"
 JSON_DIR.mkdir(parents=True, exist_ok=True)
 
 STASH_URL = stashconfig.get("STASH_URL", "http://localhost:9999/graphql")
@@ -32,12 +32,12 @@ STASH_URL = stashconfig.get("STASH_URL", "http://localhost:9999/graphql")
 # === Debug control ===
 DEBUG_DEFAULT = False
 DEBUG_ENABLED = DEBUG_DEFAULT or (
-    os.environ.get("X_DEBUG", "0").strip().lower() in ("1", "true", "on", "yes")
+    os.environ.get("TWITTERX_DEBUG", "0").strip().lower() in ("1", "true", "on", "yes")
 )
 
 # === Logging ===
-LOG_PATH = SCRIPT_DIR / "XScraper.log"
-LOG = logging.getLogger("XScraper")
+LOG_PATH = SCRIPT_DIR / "TwitterXScraper.log"
+LOG = logging.getLogger("TwitterXScraper")
 LOG.setLevel(logging.DEBUG)
 LOG.handlers.clear()
 try:
