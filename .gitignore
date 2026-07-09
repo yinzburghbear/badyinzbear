@@ -1,12 +1,15 @@
 # User JSON archive
-OFJSON/*.json
-XJSON/*.json
-Completed/*.json
+Archive/OFJSON/*.json
+Archive/TXJSON/*.json
+Archive/myjsonscraper/Completed/*.json
 
 # Python cache
 __pycache__/
 *.py[cod]
 *$py.class
+**/config.json
+**/cache/
+**/__pycache__/
 
 # Virtual environments
 .venv/
@@ -20,7 +23,7 @@ venv/
 .DS_Store
 Thumbs.db
 
-myfanscrape.zip
+archive/myfanscrape.zip
 # 01 FanScraper local configuration and generated cache
 scrapers/01-fanscraper/config.json
 scrapers/01-fanscraper/cache/
