@@ -12,7 +12,7 @@ import hashlib
 # -------------------------
 try:
     import config  # type: ignore
-    stashconfig = config.stashconfig if hasattr(config, 'stashconfig') else {}
+    stashconfig = config.stashconfig if hasattr(config, "stashconfig") else {}
 except ImportError:
     stashconfig = {}
 
@@ -24,8 +24,9 @@ except ImportError:
         def debug(msg):
             print(msg, file=sys.stderr)
 
-SCRAPER_DIR = Path("C:/Users/jason/.stash/scrapers/Yinzburghbears_Scrapers/myjsonscraper/JSACoomerScraper")
-JSON_DIR = Path("C:/Users/jason/.stash/scrapers/Yinzburghbears_Scrapers/myjsonscraper/OFJSON")
+SCRIPT_DIR = Path(__file__).resolve().parent
+JSON_DIR = SCRIPT_DIR / "OFJSON"
+
 STASH_URL = stashconfig.get("STASH_URL", "http://localhost:9999/graphql")
 
 success_tag = "[JSON: Match]"

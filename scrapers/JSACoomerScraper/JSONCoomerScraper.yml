@@ -1,13 +1,13 @@
-name: WFDXScraper
+name: JSONCoomerScraper
 sceneByFragment:
   action: script
   script:
     - python
-    - WFDXScraper.py
+    - JSONScraper.py
     - sceneByFragment
 imageByFragment:
   action: script
   script:
     - python
-    - WFDXScraper.py
+    - JSONScraper.py
     - imageByFragment

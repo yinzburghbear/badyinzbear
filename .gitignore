@@ -1,0 +1,21 @@
+# User JSON archive
+OFJSON/*.json
+XJSON/*.json
+Completed/*.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db

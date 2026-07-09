@@ -3,22 +3,41 @@ import json
 import re
 import os
 from pathlib import Path
-from datetime import datetime
-import requests
+
 import logging
 
-# === Fixed locations ===
-SCRAPER_DIR = Path("C:/Users/jason/.stash/scrapers/Yinzburghbears_Scrapers/myjsonscraper/WFDXScraper")
-JSON_DIR    = Path("C:/Users/jason/.stash/scrapers/Yinzburghbears_Scrapers/myjsonscraper/XJSON")
-STASH_URL   = "http://localhost:9999/graphql"
+# -------------------------
+# Config & logging
+# -------------------------
+try:
+    import config  # type: ignore
+    stashconfig = config.stashconfig if hasattr(config, "stashconfig") else {}
+except ImportError:
+    stashconfig = {}
+
+try:
+    import stashapi.log as log
+except ImportError:
+    class log:
+        @staticmethod
+        def debug(msg):
+            print(msg, file=sys.stderr)
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+JSON_DIR = SCRIPT_DIR / "XJSON"
+JSON_DIR.mkdir(parents=True, exist_ok=True)
+
+STASH_URL = stashconfig.get("STASH_URL", "http://localhost:9999/graphql")
 
 # === Debug control ===
 DEBUG_DEFAULT = False
-DEBUG_ENABLED = DEBUG_DEFAULT or (os.environ.get("WFDX_DEBUG", "0").strip().lower() in ("1","true","on","yes"))
+DEBUG_ENABLED = DEBUG_DEFAULT or (
+    os.environ.get("X_DEBUG", "0").strip().lower() in ("1", "true", "on", "yes")
+)
 
 # === Logging ===
-LOG_PATH = SCRAPER_DIR / "WFDXScraper.log"
-LOG = logging.getLogger("WFDXScraper")
+LOG_PATH = SCRIPT_DIR / "XScraper.log"
+LOG = logging.getLogger("XScraper")
 LOG.setLevel(logging.DEBUG)
 LOG.handlers.clear()
 try:

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import requests
 from stashapi import log
-from mfs import (
+from _01_FanScraper import (
     load_db_into_memory,
     process_row,
     get_studio_info,

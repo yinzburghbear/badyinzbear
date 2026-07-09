@@ -1,5 +1,5 @@
 name: Yinzburghbear Image Scraper
-
+# requires: 01 FanScraper
 imageByFragment:
   action: script
   script:

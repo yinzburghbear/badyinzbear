@@ -6,10 +6,14 @@ from pathlib import Path
 from typing import List, Union
 import xml.etree.ElementTree
 
-import sys
-import os
+# Add sibling/nearby Community folder without hardcoding your Windows user path
+SCRIPT_PATH = Path(__file__).resolve()
 
-sys.path.append(r"C:\Users\jason\.stash\scrapers\Community")
+for parent in [SCRIPT_PATH.parent, *SCRIPT_PATH.parents]:
+    community_path = parent / "Community"
+    if community_path.is_dir():
+        sys.path.insert(0, str(community_path))
+        break
 
 import py_common.log as log
 import py_common.graphql as graphql
@@ -473,4 +477,4 @@ if parse_result == False and foldernfo_parse_result == False:
 
 return_result(SceneObject)
 
-# Last Updated October 7, 2022
+# Last Updated 7/9/2026

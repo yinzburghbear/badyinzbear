@@ -1,0 +1,23 @@
+{
+  "stash_connection": {
+    "scheme": "http",
+    "host": "localhost",
+    "port": 9999,
+    "apikey": ""
+  },
+  "max_title_length": 64,
+  "tag_messages": true,
+  "tag_messages_name": "",
+  "cache_time": 300,
+  "max_performer_images": 50,
+  "cache_dir": "cache",
+  "cache_file": "cache.json",
+  "meta_base_path": "",
+  "direct_db": {
+    "override": true,
+    "db_format": ""
+  }
+}
+
+//   "meta_base_path": "O:/Metadata/{network}/{username}",
+//   "db_format": "O:/Metadata/{network}/{username}"

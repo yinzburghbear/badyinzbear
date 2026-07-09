@@ -1,13 +1,14 @@
-name: JSACoomerScraper
+name: XScraper
 sceneByFragment:
   action: script
   script:
     - python
-    - JSONScraper.py
+    - XScraper.py
     - sceneByFragment
 imageByFragment:
   action: script
   script:
     - python
-    - JSONScraper.py
+    - XScraper.py
     - imageByFragment
+# Last Updated 7/9/2026

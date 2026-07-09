@@ -61,3 +61,4 @@ xPathScrapers:
 
       URLs:
         selector: //div[contains(@class,"social_links")]//a[contains(@class,"social_link")]/@href
+# Last Updated 7/9/2026

@@ -1,23 +1,23 @@
-name: "1 MyFanScrape"
+name: "#1 FanScraper"
 sceneByFragment:
   action: script
   script:
     - python
     # use python3 instead if needed
-    - mfs.py
+    - 01 FanScraper.py
     - queryScene
 galleryByFragment:
   action: script
   script:
     - python
     # use python3 instead if needed
-    - mfs.py
+    - 01 FanScraper.py
     - queryGallery
 imageByFragment:
   action: script
   script:
     - python
-    - mfs.py
+    - 01 FanScraper.py
     - queryImage
 
-# Last Updated on: 2025-08-04
+# Last Updated on: 7/9/2026

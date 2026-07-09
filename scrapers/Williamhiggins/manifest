@@ -1,9 +1,0 @@
-id: Williamhiggins
-name: William Higgins
-metadata: {}
-version: fe5f9cb
-date: "2022-01-20 18:20:20"
-requires: []
-source_repository: https://stashapp.github.io/CommunityScrapers/stable/index.yml
-files:
-- Williamhiggins.yml

@@ -1,8 +1,0 @@
-name: JSA OnlyFans Image Scraper
-
-imageByFragment: 
-  action: script
-  script:
-    - python
-    - jsa_onlyfans_image_scraper.py
-    - imageByFragment
