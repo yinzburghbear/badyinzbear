@@ -1,0 +1,63 @@
+name: TheMovieDB Performer
+
+performerByURL:
+  - action: scrapeXPath
+    url:
+      - themoviedb.org/person/
+    scraper: performerScraper
+
+xPathScrapers:
+  performerScraper:
+    performer:
+      Name:
+        selector: //meta[@property="og:title"]/@content | //h2/a | //section[contains(@class,"header")]//h2 | //h2
+
+      URL:
+        selector: //meta[@property="og:url"]/@content
+
+      Image:
+        selector: //meta[@property="og:image"]/@content
+
+      Birthdate:
+        selector: //p[contains(., "Birthday")][1]
+        postProcess:
+          - replace:
+              - regex: ^\s*Birthday\s*
+                with: ""
+              - regex: \s*\(.*?\)\s*$
+                with: ""
+          - parseDate: January 2, 2006
+
+      Country:
+        selector: //p[contains(., "Place of Birth")][1]
+        postProcess:
+          - replace:
+              - regex: ^\s*Place of Birth\s*
+                with: ""
+              - regex: ^.*,\s*
+                with: ""
+              - regex: ^USA$
+                with: United States of America
+              - regex: ^UK$
+                with: United Kingdom
+
+      Aliases:
+        selector: //p[.//bdi[normalize-space()="Also Known As"]]/following-sibling::*[1]//text()
+        postProcess:
+          - replace:
+              - regex: '^\s+|\s+$'
+                with: ""
+              - regex: '\s*,\s*,+'
+                with: ", "
+              - regex: '(^,\s*|\s*,\s*$)'
+                with: ""
+
+      Details:
+        selector: //h3[normalize-space()="Biography"]/following-sibling::div[1]//p[1] | //h3[normalize-space()="Biography"]/following-sibling::p[1]
+        postProcess:
+          - replace:
+              - regex: '\s*Read More\s*$'
+                with: ""
+
+      URLs:
+        selector: //div[contains(@class,"social_links")]//a[contains(@class,"social_link")]/@href

@@ -1,0 +1,13 @@
+name: JSACoomerScraper
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - JSONScraper.py
+    - sceneByFragment
+imageByFragment:
+  action: script
+  script:
+    - python
+    - JSONScraper.py
+    - imageByFragment

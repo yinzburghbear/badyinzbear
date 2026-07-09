@@ -1,0 +1,115 @@
+name: Lucas Raunch
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - lucasraunch.com/scenes/
+      - lucasraunch.com/tour/scenes/
+    scraper: sceneScraper
+sceneByName:
+  action: scrapeXPath
+  queryURL: https://lucasraunch.com/find/{}
+  scraper: search
+sceneByQueryFragment:
+  action: scrapeXPath
+  queryURL: "{url}"
+  scraper: sceneScraper
+movieByURL:
+  - action: scrapeXPath
+    url:
+      - lucasraunch.com/movies/
+      - lucasraunch.com/tour/movies/
+    scraper: movieScraper
+performerByURL:
+  - action: scrapeXPath
+    url:
+      - lucasraunch.com/models/
+      - lucasraunch.com/tour/models/
+    scraper: performerScraper
+performerByName:
+  action: scrapeXPath
+  queryURL: https://lucasraunch.com/find/{}
+  scraper: search
+xPathScrapers:
+  search:
+    common:
+      $scene: //div[@class="scenes-panel"]//a[@class="scene-box"]
+      $performer: //div[@class="model-panel" and not(.//div[contains(@class, "movie-item")])]//a[@class="scene-box"]
+    scene:
+      Title: $scene/@title
+      URL: $scene/@href
+      Image: $scene/img/@data-original
+      Date:
+        selector: $scene//h6
+        postProcess:
+          - parseDate: "01.02.06"
+      Details: $scene//p
+    performer:
+      Name: $performer/@title
+      URL: $performer/@href
+      Image: $performer/img/@data-original
+  sceneScraper:
+    common:
+      $performer: //h2[normalize-space(.) = 'Starring']/following::h4/a
+    scene:
+      Title: &titleSel //h2/text()
+      Date:
+        selector: &dateSel //comment()[contains(., 'scene releases:')]
+        postProcess:
+          - replace:
+              - regex: ".*scene releases:\\s*([0-9]{4}-[0-9]{2}-[0-9]{2}).*"
+                with: "$1"
+          - parseDate: "2006-01-02"
+      Performers:
+        Name: $performer/text()
+        URL: $performer/@href
+      Details: &detailsAttr
+        selector: //p[strong/i[contains(@class,'icon-th-list')]]/preceding-sibling::p[1]/text()
+      Image:
+        selector: //script[contains(., 'jwplayer') and contains(., 'playlist')]/text()
+        postProcess:
+          - replace:
+              - regex: ".*image:\\s*'([^']+)'.*"
+                with: "https://www.lucasraunch.com$1"
+      Studio: &studioAttr
+        Name:
+          fixed: LucasRaunch
+      Movies:
+        Name: //strong[text() = "From:"]/following-sibling::a[1]/text()
+        URL: //strong[text() = "From:"]/following-sibling::a[1]/@href
+  movieScraper:
+    movie:
+      Name: *titleSel
+      Date:
+        selector: *dateSel
+        postProcess:
+          - parseDate: Jan 02, 2006
+      Duration:
+        selector: //strong[text() = "Runtime:"]/following-sibling::text()[1]
+        postProcess:
+          - replace:
+              - regex: "^[^0-9]*([0-9]+)\\s+minutes"
+                with: "0:$1:00"
+          - replace:
+              - regex: "^.*N/A.*$"
+                with:
+      Synopsis: *detailsAttr
+      Studio: *studioAttr
+      FrontImage: //img[@class="movie-front-cover main-photo"]/@src
+  performerScraper:
+    performer:
+      Name: *titleSel
+      Gender:
+        fixed: Male
+      PenisLength:
+        selector: //strong[text() = "Dick Size:"]/following-sibling::text()[1]
+        postProcess:
+          - replace:
+              - regex: ^
+                with: 0'
+          - feetToCm: true
+      Height:
+        selector: //strong[text() = "Height:"]/following-sibling::text()[1]
+        postProcess:
+          - feetToCm: true
+      Image: //div[@class="col-sm-5 col-md-5 col-lg-4 model-main-photo"]/img/@data-original
+# Last Updated 12/4/2025

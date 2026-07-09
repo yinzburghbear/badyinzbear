@@ -1,0 +1,23 @@
+name: "1 MyFanScrape"
+sceneByFragment:
+  action: script
+  script:
+    - python
+    # use python3 instead if needed
+    - mfs.py
+    - queryScene
+galleryByFragment:
+  action: script
+  script:
+    - python
+    # use python3 instead if needed
+    - mfs.py
+    - queryGallery
+imageByFragment:
+  action: script
+  script:
+    - python
+    - mfs.py
+    - queryImage
+
+# Last Updated on: 2025-08-04

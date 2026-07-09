@@ -1,0 +1,13 @@
+name: WFDXScraper
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - WFDXScraper.py
+    - sceneByFragment
+imageByFragment:
+  action: script
+  script:
+    - python
+    - WFDXScraper.py
+    - imageByFragment

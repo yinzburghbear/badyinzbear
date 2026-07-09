@@ -1,0 +1,63 @@
+name: Bait Buddies
+
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - baitbuddies.com
+    scraper: sceneScraper
+
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //meta[@property="og:title"]/@content
+        postProcess:
+          - replace:
+              - regex: ^[^_]+_[^_]+_
+                with: ""
+              - regex: _
+                with: " and "
+              - regex: \.mp4$
+                with: ""
+      URL:
+        fixed: "{inputURL}"
+      Image:
+        selector: (//div[contains(@class,"video-preview-img")]//img)[last()]/@src
+      Studio:
+        Name:
+          selector: //meta[@property="og:url"]/@content
+          postProcess:
+            - replace:
+                - regex: .*
+                  with: Bait Buddies
+      Code:
+        selector: //meta[@property="og:title"]/@content
+        postProcess:
+          - replace:
+              - regex: ^([^_]+)_.*$
+                with: "$1"
+      Details:
+        selector: //div[@id="description"]//p/text()[normalize-space()]
+        concat: "\n\n"
+      Performers:
+        Name:
+          selector: //div[contains(@class,"new-video-models")]//a[contains(@class,"desc")]
+        URLs:
+          selector: //div[contains(@class,"new-video-models")]//a[contains(@class,"desc")]/@href
+      Tags:
+        Name:
+          selector: //div[contains(@class,'tags-box')]//a[contains(@class,"tag")]
+driver:
+  cookies:
+    - CookieURL: "https://www.baitbuddies.com"
+      Cookies:
+        - Name: "welcome"
+          Domain: "baitbuddies.com"
+          Value: "true"
+          Path: "/"
+    - CookieURL: "https://www.baitbuddies.com"
+      Cookies:
+        - Name: "PHPSESSID"
+          Domain: "baitbuddies.com"
+          Value: "3s2q2g55l0liii6kv69uvcje16"
+          Path: "/"

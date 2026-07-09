@@ -1,0 +1,122 @@
+name: DreamBoyPlus
+
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - dreamboyplus.com/trailers/
+    scraper: sceneScraper
+
+groupByURL:
+  - action: scrapeXPath
+    url:
+      - dreamboyplus.com/series/
+    scraper: groupScraper
+
+xPathScrapers:
+  sceneScraper:
+    common:
+      $info: //div[contains(@class, "update-info-block")]
+      $groupBlock: //div[contains(@class, "section-title")]
+      $groupImage: //img[contains(@class, "dvd_box")]
+      $metaOgImage: //meta[@property="og:image"]/@content
+
+    scene:
+      Title:
+        selector: //div[contains(@class, "update-info-block")]/h3
+        postProcess:
+          - replace:
+              - regex: '\s+'
+                with: " "
+      Details:
+        selector: //div[contains(@class, "update-info-block")]//span[contains(@class, "flex-full")]//p
+      Date:
+        selector: //div[contains(@class, "update-info-block")][.//span[contains(normalize-space(.), "ADDED:")]]/span[contains(@class, "update-info-value")]
+        postProcess:
+          - parseDate: January 2, 2006
+      Studio:
+        Name:
+          selector: //div[contains(@class, "video-page-channel")]//img/@alt
+      Code:
+        selector: //meta[@property="og:image"]/@content
+        postProcess:
+          - replace:
+              - regex: '^.*/([a-zA-Z0-9]+?)/0\.jpg$'
+                with: "$1"
+      URL:
+        selector: //link[@rel="canonical"]/@href
+      Image:
+        selector: //img[contains(@class, "update_thumb")]/@src
+        postProcess:
+          - replace:
+              - regex: '-1x\.jpg$'
+                with: "-4x.jpg"
+          - replace:
+              - regex: "^/content//"
+                with: "https://dreamboyplus.com/content//"
+      Performers:
+        Name:
+          selector: //div[contains(@class, "update-info-block")]//p[@class="mb-0"]/text()
+          split: ","
+      Groups:
+        Name:
+          selector: //img[contains(@class, "dvd_box")]/ancestor::div[contains(@class,"row")][1]/div[contains(@class,"col-12") and contains(@class,"col-md-9")]//div[contains(@class,"section-title")][1]/h2
+          postProcess:
+            - replace:
+                - regex: '\|?\s*Series\s*$'
+                  with: " | Series"
+            - replace:
+                - regex: '\s+'
+                  with: " "
+        Studio:
+          Name:
+            selector: //img[contains(@class, "dvd_box")]/ancestor::div[contains(@class,"row")][1]/div[contains(@class,"col-12") and contains(@class,"col-md-9")]//div[contains(@class,"studio-label")]//a/@title
+        Synopsis:
+          selector: //img[contains(@class, "dvd_box")]/ancestor::div[contains(@class,"row")][1]//div[contains(@class,"section-text-content")]/p
+        FrontImage:
+          selector: //img[contains(@class, "dvd_box")][1]/@src
+          postProcess:
+            - replace:
+                - regex: "^/content//"
+                  with: "https://dreamboyplus.com/content//"
+            - replace:
+                - regex: '-1x\.jpg$'
+                  with: "-4x.jpg"
+
+  groupScraper:
+    common:
+      $groupTitle: //div[contains(@class, "section-title")]
+      $groupImage: //img[contains(@class, "dvd_box")]
+
+    group:
+      Name:
+        selector: //img[contains(@class, "dvd_box")]/ancestor::div[contains(@class,"row")]//div[contains(@class,"section-title")]/h2
+        postProcess:
+          - replace:
+              - regex: '\s*Series\s*$'
+                with: " | Series"
+          - replace:
+              - regex: '\s+'
+                with: " "
+      Synopsis:
+        selector: //img[contains(@class, "dvd_box")]/ancestor::div[contains(@class,"row")][1]//div[contains(@class,"section-text-content")]/p
+      Studio:
+        Name:
+          selector: //div[contains(@class, "studio-label")]//a/@title
+      FrontImage:
+        selector: //img[contains(@class, "dvd_box")]/@src
+        postProcess:
+          - replace:
+              - regex: "^/content//"
+                with: "https://dreamboyplus.com/content//"
+          - replace:
+              - regex: '-1x\.jpg$'
+                with: "-4x.jpg"
+
+driver:
+  cookies:
+    - CookieURL: "https://dreamboyplus.com"
+      Cookies:
+        - Name: "warn"
+          Domain: "dreamboyplus.com"
+          Value: "true"
+          Path: "/"

@@ -1,0 +1,20 @@
+{
+  "stash_connection": {
+    "scheme": "http",
+    "host": "localhost",
+    "port": 9999,
+    "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJ5aW56YnVyZ2hiZWFyIiwic3ViIjoiQVBJS2V5IiwiaWF0IjoxNzI4MjY4OTYxfQ.WJdwO1Yg8g3VMqCXEtBHMISjb73uJ-JXE3L2mtUij4s"
+  },
+  "max_title_length": 64,
+  "tag_messages": true,
+  "tag_messages_name": "[FS: Messages]",
+  "cache_time": 300,
+  "max_performer_images": 50,
+  "cache_dir": "cache",
+  "cache_file": "cache.json",
+  "meta_base_path": "O:/Metadata/{network}/{username}",
+  "direct_db": {
+    "override": true,
+    "db_format": "O:/Metadata/{network}/{username}"
+  }
+}

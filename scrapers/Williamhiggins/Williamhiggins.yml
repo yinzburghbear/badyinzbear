@@ -1,0 +1,102 @@
+name: William Higgins
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - ambushmassage.com
+      - cfnmeu.com
+      - malefeet4u.com
+      - str8hell.com
+      - swnude.com
+      - williamhiggins.com
+    scraper: sceneScraper
+
+xPathScrapers:
+  sceneScraper:
+    common:
+      $url: //link[@rel="canonical"]/@href
+    scene:
+      Performers:
+        Name: //span[@class="model-info-label"]/following-sibling::a
+      Title:
+        selector: //p[@class="video-detailinfo"]
+        postProcess:
+          - replace:
+              - regex: '\s+'
+                with: " "
+              - regex: '^\s+|\s+$'
+                with: ""
+              - regex: "^(.+?)(CHERRY BUSTING|EROTIC SOLO|FULL CONTACT|HELPING HAND|WANK PARTY|WRESTLING|CZECH UP|MASSAGE|WARM UP|CASTING|CFNM|BACKSTAGE|AIRPORT SECURITY|KINK|SCREEN TEST|MILKING MEN|RAUNCHY|DUTY BOUND|SPANKING|HOT ASS|SESSION STILLS|HIGH VOLTAGE|STREET HUNTING|GONZO|SOFT DUOS)$"
+                with: "$2 - $1"
+      Date:
+        selector: //span[@class="date_field_video"]/text()
+        postProcess:
+          - parseDate: 02/01/2006
+      Details:
+        selector: //div[@class="set_text"]
+      Image:
+        selector: //video/@data-poster|$url
+        concat: "|"
+        postProcess:
+          - replace:
+              - regex: ^(/[^|]+)\|(https://[^/]+)/.+ # for sites that miss the hostname
+                with: $2$1
+              - regex: \|.+$ #for the rest
+                with:
+      Studio:
+        Name:
+          selector: /html/head/title
+          postProcess:
+            - replace:
+                - regex: \.com.*
+                  with: ""
+            - map:
+                AmbushMassage: "Ambush Massage"
+                CFNMEU: "CFNMEU"
+                MaleFeet4U: "MaleFeet4U"
+                STR8HELL: "STR8HELL"
+                SWNUDE: "SW NUDE"
+                WilliamHiggins: "William Higgins"
+      Code:
+        selector: //video/@data-poster | $url
+        postProcess:
+          - replace:
+              - regex: ".*?([0-9]{8}).*"
+                with: "$1"
+driver:
+  cookies:
+    - Cookies:
+        - Name: "adult"
+          Domain: ".williamhiggins.com"
+          Value: "1"
+          Path: "/"
+    - Cookies:
+        - Name: "adult"
+          Domain: ".str8hell.com"
+          Value: "1"
+          Path: "/"
+    - Cookies:
+        - Name: "adult"
+          Domain: ".cfnmeu.com"
+          Value: "1"
+          Path: "/"
+    - Cookies:
+        - Name: "adult"
+          Domain: ".malefeet4u.com"
+          Value: "1"
+          Path: "/"
+    - Cookies:
+        - Name: "adult"
+          Domain: ".ambushmassage.com"
+          Value: "1"
+          Path: "/"
+    - Cookies:
+        - Name: "adult"
+          Domain: ".swnude.com"
+          Value: "1"
+          Path: "/"
+  useCDP: true
+  clicks:
+    - xpath: //a[@class="cc-btn cc-dismiss"]
+    - xpath: //span[@class="more_info_field_video"]
+      sleep: 5
+# Last Updated April 4, 2026

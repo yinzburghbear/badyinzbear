@@ -1,0 +1,11 @@
+id: filename-scraper
+name: Filename Parser
+metadata: {}
+version: 9d6f08c
+date: 2025-08-27 15:17:00
+requires: []
+source_repository: https://yinzburghbear.github.io/badyinzbear_stash_dev//main/index.yml
+files:
+
+- filename_parser.py
+- filename-scraper.yml

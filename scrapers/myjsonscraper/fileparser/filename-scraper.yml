@@ -1,0 +1,22 @@
+name: Filename Parser
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - filename_parser.py
+    - sceneByFragment
+imageByFragment:
+  action: script
+  script:
+    - python
+    - filename_parser.py
+    - imageByFragment
+    - debug=1
+    - studioSuffix=" (X)"
+    - codeMinDigits=12
+# imageByFragment:
+#   action: script
+#   script:
+#     - python
+#     - filename_parser.py
+#     - imageByFragment
