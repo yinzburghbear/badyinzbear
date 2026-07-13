@@ -1,0 +1,14 @@
+id: themeDope
+name: Dope Theme
+metadata:
+  description: One of the themes of all time.
+version: 0.1-3e6446b
+date: "2025-12-24 22:39:48"
+requires: []
+source_repository: https://dopeniko.github.io/stash-scripts/main/index.yml
+files:
+- dopeThemeColour.js
+- README.md
+- dopeTheme.css
+- dopeThemeFonts.js
+- themeDope.yml

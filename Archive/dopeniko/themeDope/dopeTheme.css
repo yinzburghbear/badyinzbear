@@ -1,0 +1,705 @@
+:root {
+  --primary: #ff39d4;
+  --primary-control: oklch(from var(--primary) calc(l * 1.2) c h / 0.2);
+  --primary-hover-colour: oklch(from var(--primary) 0.6 c h);
+  --accent-colour: var(--body-colour);
+  --accent-hover-colour: oklch(from var(--body-colour) calc(l * 1.5) c h);
+  --body-colour: hsl(from var(--primary) h calc(s * 0.4) calc(l * 0.08));
+  --body-hover-colour: oklch(from var(--body-colour) calc(l * 1.2) c h);
+  --text-colour: oklch(from var(--primary) 0.95 calc(0.2 * c) h);
+  --control-text-colour: oklch(from var(--primary) 0.8 calc(0.2 * c) h);
+  --text-muted: oklch(from var(--primary) 0.7 calc(0.2 * c) h);
+  --card-colour: #2a2a2a;
+  --tag-colour: #555555;
+  --minimal-button-hover: rgba(138, 155, 168, 0.15);
+  --font-sans: Rethink Sans, sans-serif;
+  --transition-duration: 0.2s;
+}
+
+body {
+  font-family: "Rethink Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+a {
+  color: var(--primary);
+}
+a:hover {
+  color: var(--text-colour);
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background: var(--body-colour);
+  color: var(--text-colour);
+  scrollbar-color: var(--text-colour) var(--body-colour);
+}
+
+.bg-dark {
+  background-color: hsl(from var(--body-colour) h s calc(l + 1)) !important;
+}
+
+.pagination .btn.page-count {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.badge-info {
+  background-color: var(--primary) !important;
+}
+
+.badge {
+  border-radius: 1rem;
+}
+
+.badge-secondary {
+  background-color: var(--primary-control);
+}
+
+.tag-item {
+  font-size: 1rem;
+  padding: 4px 8px;
+}
+
+.edit-filter-dialog .criterion-list .card .filter-item-header:focus, .edit-filter-dialog .criterion-list .card .filter-item-header:active {
+  border: none;
+  border-radius: none;
+  box-shadow: none;
+}
+
+.modifier-options .modifier-option {
+  background-color: var(--accent-hover-colour) !important;
+}
+.modifier-options .modifier-option.selected {
+  background-color: var(--primary) !important;
+}
+
+.detail-header {
+  background-color: var(--body-colour);
+}
+
+.popover {
+  background-color: var(--body-hover-colour) !important;
+}
+
+.bg-secondary {
+  background-color: var(--body-hover-colour) !important;
+}
+.bg-secondary:hover[role=button] {
+  background-color: oklch(from var(--body-hover-colour) calc(l * 1.3) c h) !important;
+}
+
+.text-white {
+  color: var(--text-colour) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--primary-control);
+}
+
+input[type=range]::-webkit-slider-runnable-track,
+input[type=range]::-moz-range-track,
+.display-mode-menu .zoom-slider::-webkit-slider-thumb,
+.display-mode-menu .zoom-slider::-moz-range-thumb {
+  background-color: var(--primary);
+}
+
+.table-list table thead {
+  background-color: var(--accent-hover-colour);
+  color: var(--text-colour);
+}
+
+.StudioTagger-studio,
+.PerformerTagger-performer {
+  background-color: var(--body-colour);
+}
+
+.StudioTagger-studio .studio-card img {
+  background-color: transparent;
+}
+
+.form-control,
+.input-control {
+  background-color: var(--body-hover-colour);
+  color: var(--control-text-colour);
+  border: none !important;
+  padding: 1rem;
+  height: 100%;
+}
+.form-control:is(input, select),
+.input-control:is(input, select) {
+  box-shadow: none !important;
+}
+.form-control:is(input, select):not(:is(select)),
+.input-control:is(input, select):not(:is(select)) {
+  border-width: 0 0 1px 0 !important;
+  border-bottom: solid !important;
+  border-color: var(--accent-colour) !important;
+}
+.form-control:is(input, select):hover,
+.input-control:is(input, select):hover {
+  background-color: oklch(from var(--body-hover-colour) calc(l * 1.1) c h);
+}
+.form-control:is(input, select):active, .form-control:is(input, select):focus,
+.input-control:is(input, select):active,
+.input-control:is(input, select):focus {
+  color: var(--text-colour);
+  background-color: var(--body-hover-colour) !important;
+}
+.form-control:is(input, select):active:not(:is(select)), .form-control:is(input, select):focus:not(:is(select)),
+.input-control:is(input, select):active:not(:is(select)),
+.input-control:is(input, select):focus:not(:is(select)) {
+  border-color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+.form-control:is(input, select),
+.input-control:is(input, select) {
+  transition-property: border-color;
+}
+.form-control,
+.input-control {
+  transition-property: background-color;
+  transition-duration: var(--transition-duration);
+}
+.form-control::placeholder,
+.input-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group.row > label {
+  line-height: 2;
+}
+
+.scraper-menu .dropdown-menu .scraper-filter-container {
+  background-color: transparent;
+}
+
+.invalid-feedback {
+  margin: unset;
+}
+
+.react-select__placeholder {
+  color: var(--text-muted) !important;
+}
+
+div.react-select__control {
+  background-color: var(--body-hover-colour);
+  border-width: 2px;
+  border-color: transparent;
+}
+div.react-select__control:hover {
+  border-color: transparent;
+}
+
+div.react-select__menu,
+div.dropdown-menu {
+  background-color: var(--body-hover-colour);
+  padding: 1rem 0.5rem;
+  gap: 0.5rem;
+}
+
+.react-datepicker-wrapper > * {
+  height: 100%;
+}
+.react-datepicker-wrapper button {
+  height: 100%;
+}
+
+select.form-control {
+  padding-right: 2rem;
+  appearance: none;
+  background: none;
+}
+
+div:has(> select.form-control:only-child) {
+  position: relative;
+}
+div:has(> select.form-control:only-child)::after {
+  transition: transform 0.2s;
+  pointer-events: none;
+  position: absolute;
+  background-color: var(--control-text-colour);
+  height: 100%;
+  aspect-ratio: 1/1.5;
+  right: 0;
+  top: 0;
+  content: "";
+  --icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M300.3 440.8C312.9 451 331.4 450.3 343.1 438.6L471.1 310.6C480.3 301.4 483 287.7 478 275.7C473 263.7 461.4 256 448.5 256L192.5 256C179.6 256 167.9 263.8 162.9 275.8C157.9 287.8 160.7 301.5 169.9 310.6L297.9 438.6L300.3 440.8z"/></svg>');
+  mask-image: var(--icon);
+  -webkit-mask-position-x: 80%;
+  -webkit-mask-position-y: 50%;
+  mask-composite: exclude;
+  mask-repeat: no-repeat;
+  mask-size: 60%;
+  mask-position: center;
+}
+div:has(> select.form-control:only-child):has(select:focus)::after {
+  transform: rotate(180deg);
+}
+
+.pagination.btn-group {
+  background-color: var(--accent-colour);
+}
+
+.btn {
+  color: var(--control-text-colour) !important;
+  padding: 0.625rem 1.2rem;
+  border: none !important;
+}
+.btn:hover {
+  color: var(--text-colour) !important;
+}
+.btn:focus, .btn.focus {
+  box-shadow: unset;
+}
+.btn:not(.minimal):not(.btn-minimal) {
+  background-color: transparent;
+}
+.btn:not(.minimal):not(.btn-minimal):hover {
+  background-color: var(--accent-hover-colour);
+}
+.btn:not(.minimal):not(.btn-minimal).disabled, .btn:not(.minimal):not(.btn-minimal)[disabled] {
+  pointer-events: none;
+}
+
+.btn-secondary:hover {
+  color: var(--text-colour);
+}
+
+select.btn-secondary {
+  background-color: var(--accent-colour) !important;
+}
+select.btn-secondary:hover {
+  background-color: var(--accent-hover-colour) !important;
+}
+select.btn-secondary.disabled, select.btn-secondary[disabled] {
+  pointer-events: none;
+}
+
+a:hover:has(> button) {
+  color: unset;
+  text-decoration: none;
+}
+
+.btn-primary:is(button):not(.minimal) {
+  color: white !important;
+  background-color: var(--primary-control) !important;
+}
+.btn-primary:is(button):not(.minimal):hover {
+  background-color: var(--primary-hover-colour) !important;
+}
+
+.btn-primary:hover {
+  border-color: unset;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  background-color: unset;
+  border-color: unset;
+  box-shadow: unset;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: unset;
+  background-color: unset;
+  border-color: unset;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: unset;
+}
+
+.btn-secondary.active {
+  background-color: var(--accent-hover-colour) !important;
+}
+.btn-secondary:active, .btn-secondary:focus {
+  background-color: var(--body-hover-colour) !important;
+  box-shadow: none !important;
+}
+
+.btn-danger {
+  color: var(--danger) !important;
+}
+.btn-danger:hover {
+  background-color: var(--danger) !important;
+}
+
+.Lightbox-navbutton {
+  background-color: transparent !important;
+}
+
+.Lightbox-header-right button {
+  background-color: transparent !important;
+}
+.Lightbox-header-right button:hover {
+  background-color: var(--minimal-button-hover) !important;
+}
+
+.preview-button button.btn.btn-primary {
+  background-color: transparent !important;
+}
+
+div[class*=-divider] > button.btn.btn-primary {
+  background-color: transparent !important;
+}
+div[class*=-divider] > button.btn.btn-primary:hover {
+  background-color: var(--minimal-button-hover) !important;
+}
+
+.not-organized {
+  filter: brightness(0.5);
+}
+
+.not-favorite {
+  filter: brightness(0.5) !important;
+}
+
+.modal-dialog {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  max-width: unset;
+  margin: unset;
+  justify-content: center;
+  align-items: center;
+}
+.modal-dialog .modal-content > * {
+  background-color: var(--body-colour);
+}
+.modal-dialog .modal-content > form > * {
+  background-color: var(--body-colour);
+}
+@media (min-width: 920px) {
+  .modal-dialog.modal-lg .modal-content, .modal-dialog.modal-xl .modal-content {
+    max-width: 800px;
+  }
+}
+@media (min-width: 768px) {
+  .modal-dialog .modal-content {
+    max-width: 600px;
+  }
+}
+.modal-dialog .modal-body:first-of-type {
+  padding-top: 2rem;
+}
+.modal-dialog .modal-footer {
+  border-top-color: transparent;
+}
+
+nav.top-nav {
+  padding: 0rem 1rem;
+  height: 4rem;
+}
+nav.top-nav div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+nav.top-nav .btn {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+nav.top-nav .btn:is(a):hover {
+  background: none !important;
+  border-color: none !important;
+  box-shadow: none !important;
+}
+nav.top-nav .btn:is(a).active {
+  background: none !important;
+  border-color: none !important;
+  box-shadow: none !important;
+  color: var(--primary) !important;
+}
+nav .navbar-nav > div:has(> a.active) {
+  border-bottom: 2px solid var(--primary);
+}
+nav .navbar-nav > div > a {
+  padding-left: 2px !important;
+}
+nav.navbar-expand-xl .nav-link {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.nav-pills .nav-link {
+  color: var(--control-text-colour);
+}
+.nav-pills .nav-link.active {
+  background-color: var(--accent-colour) !important;
+}
+.nav-pills .nav-link:hover {
+  color: var(--text-colour);
+}
+
+.nav-tabs .nav-link {
+  color: var(--control-text-colour);
+}
+.nav-tabs .nav-link:hover {
+  color: var(--text-colour);
+  border-color: transparent;
+}
+.nav-tabs .nav-link.active {
+  background-color: transparent;
+  color: var(--primary);
+}
+.nav-tabs .nav-link.active:hover {
+  border-color: var(--primary);
+}
+
+.sidebar-pane .sidebar {
+  background-color: var(--body-colour);
+  margin-top: 4rem;
+  padding-top: 1rem;
+  border-right: unset;
+}
+.sidebar-pane .search-container {
+  border: none !important;
+}
+.sidebar-pane .filter-section {
+  border: none !important;
+}
+.sidebar-pane .filter-section:not(:has(> .filter-tags)):after {
+  content: "No filters selected";
+  color: var(--control-text-colour);
+}
+.sidebar-pane .sidebar-section {
+  border-bottom: unset;
+  padding: 0.5rem 0;
+}
+.sidebar-pane .sidebar-section li {
+  margin: 0.5rem 0;
+}
+.sidebar-pane .sidebar-section .collapse-header {
+  padding: inherit 0.25rem;
+}
+.sidebar-pane .sidebar-section .clearable-input-group {
+  padding: 0 0.5rem;
+}
+.sidebar-pane .sidebar-section:has(.collapse-button:hover) {
+  background: var(--body-hover-colour);
+}
+.sidebar-pane .sidebar-section {
+  transition-property: background-color;
+}
+.sidebar-pane .list-results-header > :last-child > * {
+  height: 100%;
+}
+.sidebar-pane .page-size-selector select {
+  padding: 0.625rem 1.2rem;
+}
+
+[role=toolbar] {
+  background-color: var(--body-colour);
+  margin-bottom: 1rem;
+}
+[role=toolbar] .paginationIndex {
+  font-size: 1.25rem;
+  padding-left: 1rem;
+}
+[role=toolbar] .paginationIndex .scenes-stats {
+  font-size: 0.8rem;
+  padding-left: 0.5rem;
+}
+
+.card {
+  background-color: transparent !important;
+  margin: 0px 4px 12px 4px;
+  border-radius: unset;
+  box-shadow: unset;
+  font-family: var(--font-sans);
+}
+.card:hover {
+  background: radial-gradient(circle, hsl(from var(--primary) h s l/2%) 60%, hsl(from var(--body-colour) h s calc(l + 3)) 100%) !important;
+}
+.card h5.card-section-title {
+  font-weight: bolder !important;
+  font-size: 16px !important;
+}
+.card > .card-section {
+  padding: 0.6rem 2rem;
+}
+.card a:has(~ .performers > .list:empty) {
+  padding-top: 6px;
+}
+.card {
+  transition-property: all;
+  transition-duration: 0.25s;
+  transition-behavior: allow-discrete;
+}
+
+.hover-scrubber-indicator-marker {
+  background-color: var(--primary) !important;
+}
+
+.progress-indicator {
+  background-color: hsl(from var(--primary) h s l/40%) !important;
+}
+
+.preview-button > button {
+  background-color: transparent !important;
+}
+
+.badge.badge-secondary.tag-item {
+  background-color: var(--primary-control) !important;
+  color: var(--text-colour) !important;
+}
+
+div.react-select__control .react-select__multi-value {
+  background-color: var(--text-colour);
+}
+div.react-select__control .react-select__multi-value span,
+div.react-select__control .react-select__multi-value .react-select__multi-value__remove {
+  color: var(--body-colour);
+}
+div.react-select__control .react-select__multi-value .react-select__multi-value__remove:hover {
+  color: var(--body-colour);
+}
+
+.stash-id-pill span {
+  background-color: var(--primary);
+}
+
+.stash-id-pill a {
+  background-color: var(--primary-control);
+}
+
+.recommendation-row-head {
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 1rem;
+}
+.recommendation-row-head h2 {
+  font-size: 2rem;
+  text-transform: unset;
+}
+.recommendation-row-head a {
+  color: var(--body-colour);
+  position: relative;
+}
+.recommendation-row-head a::after {
+  position: absolute;
+  content: "";
+  --icon: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="%23e3e3e3"><path d="M120-320v-80h320v80H120Zm0-160v-80h480v80H120Zm0-160v-80h480v80H120Zm520 520v-320l240 160-240 160Z"/></svg>');
+  mask: var(--icon) no-repeat 100% 100%;
+  -webkit-mask: var(--icon) no-repeat 100% 100%;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+  background-color: var(--text-colour);
+  height: 2rem;
+  width: 2rem;
+  bottom: 0;
+}
+.recommendation-row-head a:hover::after {
+  background-color: white;
+}
+
+#scene-edit-details .edit-buttons-container {
+  background-color: var(--body-colour);
+}
+
+#queue-viewer a {
+  color: var(--text-colour);
+}
+#queue-viewer a span:not(.queue-scene-title) {
+  color: var(--text-muted) !important;
+}
+#queue-viewer ol {
+  padding-left: 24px;
+}
+#queue-viewer .queue-controls {
+  background-color: var(--body-colour);
+  padding-bottom: 1rem;
+  box-sizing: content-box;
+}
+
+#queue-content li a {
+  display: inline-block;
+}
+
+#queue-viewer .current {
+  background-color: transparent;
+}
+#queue-viewer .current a > div {
+  background-color: var(--primary-control);
+}
+#queue-viewer li:not(.current) a > div:hover {
+  background-color: var(--body-hover-colour);
+}
+
+.scene-list-toolbar.filtered-list-toolbar .toolbar-selection-section,
+.scene-list-toolbar.filtered-list-toolbar div.filter-section {
+  border: none;
+}
+
+.selected-items-info {
+  gap: 1rem;
+}
+
+.search-item {
+  background-color: var(--body-colour);
+}
+
+.input-group-text {
+  background-color: var(--primary-control);
+  color: var(--text-colour);
+  border: none;
+}
+
+#tasks-panel .tasks-panel-queue {
+  background-color: var(--body-colour) !important;
+}
+#tasks-panel .tasks-panel-queue > * {
+  background-color: var(--body-colour) !important;
+}
+#tasks-panel .tasks-panel-queue .card:hover {
+  background: var(--body-colour) !important;
+}
+
+.setting-section {
+  background-color: unset !important;
+}
+.setting-section .card:hover {
+  background: var(--body-colour) !important;
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  border-color: unset !important;
+  box-shadow: unset;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  border: none;
+  background-color: var(--primary);
+  color: var(--body-hover-colour);
+}
+
+.package-manager table thead {
+  background-color: var(--body-colour);
+}
+
+div.job-table:hover {
+  background: none !important;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: var(--primary);
+}
+
+/*# sourceMappingURL=dopeTheme.css.map */

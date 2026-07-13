@@ -1,0 +1,44 @@
+id: refract
+name: Refract Theme
+metadata:
+  description: Liquid-glass theme for Stash — frosted glass panels, floating navbar,
+    dark base, configurable accent.
+version: 1.17.3-e47191b
+date: "2026-07-04 22:19:47"
+requires: []
+source_repository: https://ordureconnoisseur.github.io/plugins/main/index.yml
+files:
+- README.md
+- LICENSE
+- img\heart-halo-4.svg
+- img\heart-halo-2.svg
+- img\heart-halo-3.svg
+- img\heart-halo-5.svg
+- img\heart-halo-1.svg
+- css\11_misc_tail.css
+- css\05_list_views.css
+- css\12_mobile.css
+- css\07_scene_details.css
+- css\03_cards.css
+- css\13_plugins.css
+- css\01_tokens.css
+- css\09_buttons.css
+- css\17_scroll_perf.css
+- css\10_pills_badges.css
+- css\14_light.css
+- css\06_scene_player.css
+- css\08_misc_mid.css
+- css\16_playing_card.css
+- css\04_filters.css
+- css\15_lite.css
+- css\02_navbar.css
+- css\14_lite.css
+- css\multiview-player.css
+- fonts\ConcertOne-Regular.latin.woff2
+- fonts\AlbertSans-Variable.woff2
+- fonts\AlbertSans-Variable-Italic.woff2
+- fonts\ConcertOne-Regular.latin-ext.woff2
+- GRID_REBUILD_PLAN.md
+- refract.yml
+- refract.js
+- AUDIT.md

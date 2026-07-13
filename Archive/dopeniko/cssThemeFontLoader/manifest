@@ -1,0 +1,12 @@
+id: cssThemeFontLoader
+name: Font Loader
+metadata:
+  description: Plugin dependency to facilitate loading fonts from external sources.
+version: 0.1-f25b6db
+date: "2025-11-21 03:40:08"
+requires: []
+source_repository: https://dopeniko.github.io/stash-scripts/main/index.yml
+files:
+- cssThemeFontLoader.yml
+- cssThemeFontLoader.js
+- README.md

@@ -1,0 +1,326 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Lite mode — strips the GPU-heavy bits without the nuclear nuke the
+   original lite mode evolved into. What's killed:
+     • backdrop-filter everywhere (the main D3D11 cost driver)
+     • hover glow halos on cards, navbar buttons, scene toolbar
+     • active-route navbar icon glow
+     • focused chip / list-item glow
+     • 3D card tilt + glare overlay (also gated in refract.js)
+
+   What stays:
+     • animations, transitions, base shadows
+     • performer carousel infinite-loop clones
+     • cheap state indicators (border-color, color shifts) on hover
+
+   Re-scoped 2026-05-24. Activated by `body.refract-lite` (toggle in
+   plugin settings). Rules below ALL scope to
+   `body.stash-liquid-glass.refract-lite ...` so they layer on top of
+   every other refract sheet.
+
+   Loaded LAST in refract.yml (after 13_plugins.css).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Kill all backdrop-filter blurs (heaviest GPU cost) ──────── */
+body.stash-liquid-glass.refract-lite *,
+body.stash-liquid-glass.refract-lite *::before,
+body.stash-liquid-glass.refract-lite *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+}
+
+/* ── 2. Hide card tilt-glare overlay (JS gate also skips binding) ─ */
+body.stash-liquid-glass.refract-lite .stash-tilt-glare,
+body.stash-liquid-glass.refract-lite .stash-tilt-glare-inner {
+    display: none !important;
+}
+
+/* ── 3. Glass panels: solid dark backgrounds where backdrop-filter
+       was the visible. Modals, popovers, dropdowns, lightbox chrome,
+       scene/gallery/image tab containers. */
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs),
+body.stash-liquid-glass.refract-lite .gallery-tabs,
+body.stash-liquid-glass.refract-lite .Lightbox-footer,
+body.stash-liquid-glass.refract-lite .Lightbox-navbutton.btn.btn-link,
+body.stash-liquid-glass.refract-lite .modal-content,
+body.stash-liquid-glass.refract-lite .popover,
+body.stash-liquid-glass.refract-lite #select_page_popover,
+body.stash-liquid-glass.refract-lite .dropdown-menu {
+    background: rgba(18, 18, 22, 0.96) !important;
+}
+
+/* ── 4. Floating glass platforms (navbar, filter toolbar pill,
+       pagination capsule, detail header). All use var(--glass-bg)
+       (~0.06 alpha) + backdrop-blur in base mode; without blur the
+       low alpha reads as transparent film over scrolling content.
+       Pin to fully opaque dark. */
+body.stash-liquid-glass.refract-lite nav.top-nav.navbar,
+body.stash-liquid-glass.refract-lite .filtered-list-toolbar::before,
+body.stash-liquid-glass.refract-lite .pagination,
+body.stash-liquid-glass.refract-lite .detail-header {
+    background: rgb(35, 35, 35) !important;
+}
+
+/* ── 5. Cards: no hover lift, dark drop-shadow instead of accent
+       glow halo. Keeps a sense of depth on hover without the GPU
+       cost of the multi-layer accent glow. Base mode's accent
+       border-color flows through (cheap, no compositor cost). */
+body.stash-liquid-glass.refract-lite .card:hover,
+body.stash-liquid-glass.refract-lite .grid-card:hover,
+body.stash-liquid-glass.refract-lite .scene-card:hover,
+body.stash-liquid-glass.refract-lite .performer-card:hover {
+    transform: none !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* ── 6. Navbar buttons: kill hover lift + accent halo + glare, but
+       paint a cheap accent tint instead. Background-color shift is
+       paint-only — no compositor cost. */
+body.stash-liquid-glass.refract-lite nav.top-nav a.btn:hover,
+body.stash-liquid-glass.refract-lite nav.top-nav button.btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background: rgba(var(--accent-rgb), 0.12) !important;
+}
+body.stash-liquid-glass.refract-lite nav.top-nav a.btn::before,
+body.stash-liquid-glass.refract-lite nav.top-nav button.btn::before,
+body.stash-liquid-glass.refract-lite nav.top-nav .gs-trigger.btn::before,
+body.stash-liquid-glass.refract-lite nav.top-nav button.gs-trigger::before {
+    display: none !important;
+}
+
+/* ── 7. ACTIVE-route navbar icons. The base rule that paints the
+       accent halo on active icons uses a high-specificity :is()
+       selector chain — equal-class +1 specificity (with .refract-lite
+       on body) is needed to win the cascade. Keep the accent COLOUR
+       on text/border so the active state is still visible — just
+       kill the glow + filter. */
+body.stash-liquid-glass.refract-lite nav.top-nav :is(a.nav-link, a.nav-utility):is(.stash-nav-active, .active) > :is(button, .btn),
+body.stash-liquid-glass.refract-lite nav.top-nav :is(a.nav-link, a.nav-utility):is(.stash-nav-active, .active).btn,
+body.stash-liquid-glass.refract-lite nav.top-nav .navbar-nav a.btn.stash-nav-active,
+body.stash-liquid-glass.refract-lite nav.top-nav .navbar-buttons a[href$="/new"] > :is(button, .btn) {
+    box-shadow: none !important;
+}
+body.stash-liquid-glass.refract-lite nav.top-nav :is(a.nav-link, a.nav-utility):is(.stash-nav-active, .active) svg,
+body.stash-liquid-glass.refract-lite nav.top-nav .navbar-nav a.btn.stash-nav-active svg,
+body.stash-liquid-glass.refract-lite nav.top-nav .navbar-buttons a[href$="/new"] svg {
+    filter: none !important;
+}
+body.stash-liquid-glass.refract-lite nav.top-nav .navbar-buttons a[href$="/new"] > button:hover,
+body.stash-liquid-glass.refract-lite nav.top-nav .navbar-buttons a[href$="/new"] > .btn:hover {
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ── 8. Drop accent glow on focused list items / focused chips ── */
+body.stash-liquid-glass.refract-lite .gs-card.gs-focused,
+body.stash-liquid-glass.refract-lite .gs-chip.gs-focused {
+    box-shadow: none !important;
+}
+
+/* ── 9. Scene-toolbar pill button glow on hover ──────────────── */
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs) :is(.scene-toolbar, .image-toolbar) .organized-button:hover,
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs) :is(.scene-toolbar, .image-toolbar) .dropdown-toggle:hover,
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs) :is(.scene-toolbar, .image-toolbar) .mv-scene-page-btn:hover,
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs) :is(.scene-toolbar, .image-toolbar) .organized-button.organized,
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs) :is(.scene-toolbar, .image-toolbar) .organized-button.organized:hover {
+    box-shadow: none !important;
+}
+/* Keep the cheap accent fill/colour on the active organized state (no glow). */
+body.stash-liquid-glass.refract-lite :is(.scene-tabs, .image-tabs) :is(.scene-toolbar, .image-toolbar) .organized-button.organized svg {
+    filter: none !important;
+}
+
+/* ── 10. Minimal-cards pills + overlays solid-dark fallback. The
+       performer pill, scene specs overlay, and studio overlay all
+       use backdrop-filter in base mode; without it they read as
+       ghost text on the thumbnail. Hover keeps a cheap colour shift
+       for feedback (no glow halo). */
+body.stash-liquid-glass.refract-lite.refract-minimal-cards .scene-card .stash-performer-pill {
+    background: rgba(20, 20, 24, 0.92) !important;
+}
+body.stash-liquid-glass.refract-lite.refract-minimal-cards .scene-card .stash-performer-pill:hover {
+    background: rgba(30, 30, 34, 0.92) !important;
+    border-color: var(--accent-glow) !important;
+    color: var(--accent-bright) !important;
+}
+/* Performer popup: lite mode strips its backdrop blur (rule 1), so the
+   translucent glass background reads as see-through over the card/page.
+   Pin it fully opaque. Broadened past the minimal-cards/scene-card scope of
+   the base rule so it stays solid wherever the popup appears. */
+body.stash-liquid-glass.refract-lite .stash-performer-popup {
+    background: rgb(16, 16, 20) !important;
+}
+
+/* Performer hover tooltip — the "performer card on hover" portal (Suggestion
+   Box opt-in, body.refract-performer-card-hover). Its `--card` style overrides
+   the opaque base bg with var(--glass-bg-strong) + backdrop blur; lite strips
+   the blur, leaving only the low-alpha glass = see-through. Pin both the text
+   and card variants solid. The image fill inside also defaults to the glass
+   token before it loads, so solidify that too. */
+body.stash-liquid-glass.refract-lite .refract-performer-name-tooltip-portal,
+body.stash-liquid-glass.refract-lite .refract-performer-name-tooltip-portal--card,
+body.stash-liquid-glass.refract-lite .refract-perf-tip-img {
+    background: rgb(16, 16, 20) !important;
+}
+body.stash-liquid-glass.refract-lite.refract-minimal-cards .scene-card .scene-specs-overlay > span {
+    background: rgba(20, 20, 24, 0.92) !important;
+}
+body.stash-liquid-glass.refract-lite.refract-minimal-cards .scene-card .scene-specs-overlay > .overlay-resolution {
+    background: rgba(30, 30, 34, 0.92) !important;
+    border-color: var(--accent-glow) !important;
+    color: var(--accent-bright) !important;
+}
+/* The studio logo is a contained image (or text with a native text-shadow),
+   not small overlay text, so it doesn't need the solid legibility plate the
+   spec/resolution chips get — that plate rendered as a sharp dark box around
+   the logo. Keep it transparent, matching regular (non-lite) minimal mode. */
+body.stash-liquid-glass.refract-lite.refract-minimal-cards .scene-card .studio-overlay {
+    background: transparent !important;
+}
+
+/* ── Playing-card mode: flatten per-card neon for weak GPUs ──────────
+   Playing-card mode stacks a neon scaffold on EVERY card on the page:
+   `filter: drop-shadow` glow chains on the name / gender icon / tier-
+   ribbon text (the legendary + perfect names run 5-6 drop-shadow layers
+   each), multi-layer box-shadow halos on the tier ribbon, and a constant
+   shimmer animation on perfect-tier ribbons + names. Across a large
+   library that is a lot of continuous filter + shadow raster for an
+   integrated GPU. Lite mode keeps the layout and tier COLOURS (carried by
+   the ribbon/name gradients, not the glow) but drops the GPU-heavy parts:
+   filters off, the ribbon halo flattened to one cheap shadow, the shimmer
+   stopped. Scoped to the FRONT scaffold (.refract-pc-*) only — the card
+   back's blurred photo backdrop and one-at-a-time dossier stay intact. */
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card :is(.performer-card, .scene-card) .refract-pc-name-text,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card :is(.performer-card, .scene-card) .refract-pc-name-banner .gender-icon,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card :is(.performer-card, .scene-card) .refract-pc-tier-label,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card :is(.performer-card, .scene-card) .refract-pc-tier-label::after {
+    filter: none !important;
+    animation: none !important;
+}
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card :is(.performer-card, .scene-card) .refract-pc-tier-label {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+}
+/* The name's neon glow (filter) is stripped above, leaving light text that
+   can vanish on bright / white photos. Restore legibility with a SOFT
+   text-shadow (lite doesn't strip text-shadow). Diffuse, not a hard
+   outline — a quiet drop + a faint halo, so it reads as depth rather than
+   a sticker stroke. Lite-only; full mode keeps its glow untouched. */
+/* Applies to every tier now: Legendary + Perfect names are solid white
+   too, so there's no background-clip text for the shadow to break. */
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card :is(.performer-card, .scene-card) .refract-pc-name-text {
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.8),
+        0 0 6px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* ── Playing-card stat pills: strip the neon for lite mode ──────────
+   Each stat pill (.stash-perf-stats > *) stacks a 5-layer tube-light
+   box-shadow (14/32/64px blurs) plus drop-shadow filter chains on its
+   number and icon. Four pills on every card across a full grid is a lot
+   of expensive blur raster + per-pill compositing layers. Lite keeps the
+   layout, border, and tier-coloured fill/text (all paint-only, no
+   compositor cost) but flattens the glow to one cheap depth shadow,
+   kills the icon/number filters, and drops the hover lift + halo. */
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .performer-card .stash-perf-stats > *,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .performer-card .stash-perf-stats > *:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+    transform: none !important;
+    /* White border to match the flat-white text + icon below. */
+    border-color: rgba(255, 255, 255, 0.9) !important;
+}
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .performer-card .stash-perf-stats > * > span,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .performer-card .stash-perf-stats > * > svg {
+    filter: none !important;
+}
+/* Readability: in lite, drop the tier-colour gradient/fill on the pill
+   label, value AND icon and paint them flat white, which reads clearly
+   over the translucent fill (the gold-on-gold fix). The border (above) is
+   whitened to match. No blur/shadow, just a colour swap. */
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .performer-card .stash-perf-stats > * > span {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    /* One small static shadow so the white text holds up over bright
+       photos. Single layer (not a stacked chain) and no blur surface, so
+       it's cheap, like the rating banner's own text-shadow. */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .performer-card .stash-perf-stats > * > svg {
+    fill: #fff !important;
+    /* Matching single drop-shadow on the white icon. */
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7)) !important;
+}
+
+/* ── Tier / playing-card cards: stop the continuous motion ──────────
+   In BOTH tiers and playing-card modes, every rated card runs nonstop
+   infinite animations: a 7-layer box-shadow "breathe", a float/scale
+   bob, a sheen sweep (::before), and sparkle / rotating-conic-border
+   overlays (::after). On a full grid that is dozens of cards repainting
+   every single frame, forever — the biggest ongoing cost on weak
+   hardware, and lite mode was leaving all of it running. Freeze them
+   (static paints once and caches), reset the float transform so cards
+   sit still, and replace the animated 7-layer glow with a cheap 3-layer
+   static ring so scroll raster stays light while the tier COLOUR
+   identity is kept. The rotating ::after ring freezes into a static
+   coloured frame (legendary/perfect keep their multi-hue border). */
+body.stash-liquid-glass.refract-lite:is(.refract-rating-style-tiers, .refract-rating-style-playing-card) :is(.performer-card, .scene-card)[class*="refract-card-tier-"],
+body.stash-liquid-glass.refract-lite:is(.refract-rating-style-tiers, .refract-rating-style-playing-card) :is(.performer-card, .scene-card)[class*="refract-card-tier-"]::before,
+body.stash-liquid-glass.refract-lite:is(.refract-rating-style-tiers, .refract-rating-style-playing-card) :is(.performer-card, .scene-card)[class*="refract-card-tier-"]::after {
+    animation: none !important;
+}
+body.stash-liquid-glass.refract-lite:is(.refract-rating-style-tiers, .refract-rating-style-playing-card) :is(.performer-card, .scene-card)[class*="refract-card-tier-"] {
+    translate: none !important;
+    scale: none !important;
+    rotate: none !important;
+    /* A thicker static ring (white hairline + 3px tier-colour band) stands
+       in for the border that the now-removed glow used to imply, so cards
+       still read as framed. Spread-only rings are nearly free; one small
+       10px glow + a depth shadow keep a hint of dimension. */
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.65),
+        0 0 0 3px rgba(var(--tier-color-bright, var(--tier-color)), 0.85),
+        0 0 10px rgba(var(--tier-color), 0.4),
+        0 4px 14px rgba(0, 0, 0, 0.45) !important;
+}
+/* The sheen sweep (::before) rests off-canvas at opacity 0 when frozen,
+   so it just adds a dead compositing layer — drop it entirely. */
+body.stash-liquid-glass.refract-lite:is(.refract-rating-style-tiers, .refract-rating-style-playing-card) :is(.performer-card, .scene-card)[class*="refract-card-tier-"]::before {
+    display: none !important;
+}
+/* Card-back foil/holo shimmer (only ever on the single flipped card, but
+   no reason to animate it in lite either). */
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .refract-cb,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .refract-cb::after,
+body.stash-liquid-glass.refract-lite.refract-rating-style-playing-card .refract-cb-score-num {
+    animation: none !important;
+}
+
+/* ── EXPERIMENTAL: skip rendering offscreen cards in list grids ──────
+   content-visibility:auto lets the browser skip layout, paint AND image
+   decode for any card scrolled out of view, doing that work only as the
+   card nears the viewport. It's the one lever that cuts the structural
+   style-recalc / layout cost and the image-decode cost together (the
+   practical version of "render images cheaper" - offscreen images never
+   decode). Scoped to the vertical LIST grids only (cards that are direct
+   children of .row.justify-content-center), so the home-page slick
+   carousels - where a per-card version misbehaved before - are left
+   alone. contain-intrinsic-size uses the `auto` keyword so each card
+   remembers its real size after rendering once; the ~320px fallback only
+   applies to never-yet-seen cards far below, minimising scroll drift.
+   NOTE: content-visibility implies paint containment, which clips a
+   card's outside decorations - the legendary/perfect rotating-border
+   ::after (inset:-4.5px) will rely on the static box-shadow ring above
+   instead of its conic ring here. Lite mode only; trivially revertible. */
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .performer-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .scene-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .gallery-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .image-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .studio-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .tag-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .group-card,
+body.stash-liquid-glass.refract-lite .row.justify-content-center > .movie-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 320px;
+}
