@@ -5,6 +5,15 @@ from urllib.parse import urlparse, urlencode
 
 from bs4 import BeautifulSoup, Tag
 import cloudscraper
+import os
+import sys
+
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "Community")
+    ),
+)
 
 from py_common.config import get_config
 from py_common.types import ScrapedPerformer, ScrapedScene, ScrapedMovie, ScrapedStudio
