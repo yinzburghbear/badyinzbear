@@ -1,0 +1,46 @@
+# requires: Algolia
+name: "ChaosMen"
+sceneByURL:
+  - action: script
+    url:
+      - chaosmen.com/en/video
+    script:
+      - python
+      - ../Community/Algolia/Algolia.py
+      - chaosmen
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - ../Community/Algolia/Algolia.py
+    - chaosmen
+sceneByName:
+  action: script
+  script:
+    - python
+    - ../Community/Algolia/Algolia.py
+    - chaosmen
+    - searchName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - ../Community/Algolia/Algolia.py
+    - chaosmen
+    - validName
+PerformerByURL:
+  - action: script
+    url:
+      - chaosmen.com/en/model
+    script:
+      - python
+      - ../Community/Algolia/Algolia.py
+      - chaosmen
+PerformerByFragment:
+  action: script
+  script:
+    - python
+    - ../Community/Algolia/Algolia.py
+    - chaosmen
+    - performer
+# Last Updated 7/14/2026
