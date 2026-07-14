@@ -28,3 +28,4 @@ archive/myfanscrape.zip
 scrapers/01-fanscraper/config.json
 scrapers/01-fanscraper/cache/
 scrapers/01-fanscraper/cache.json
+scrapers/py_common/config.ini
