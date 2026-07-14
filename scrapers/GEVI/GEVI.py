@@ -127,6 +127,28 @@ ethnicity_map = {
     "White": "Caucasian",
 }
 
+def format_disambiguation(disamb: str) -> str:
+    # Keep short GEVI codes uppercase.
+    if re.fullmatch(r"[A-Z0-9]{2,6}", disamb.upper()):
+        return disamb.upper()
+
+    return disamb.title()
+
+
+def parse_name(name: str) -> tuple[str, str | None]:
+    """Parse a name and optional parenthesized disambiguation."""
+    match = re.match(r"^(.+?)(?:\s*\((.*?)\))?$", name)
+
+    if match:
+        base_name = match.group(1).strip()
+        disambiguation = match.group(2)
+
+        if disambiguation:
+            disambiguation = format_disambiguation(disambiguation.strip())
+
+        return base_name, disambiguation
+
+    return name, None
 
 def performer_from_url(url: str) -> ScrapedPerformer | None:
     res = scraper.get(url)
@@ -148,9 +170,15 @@ def performer_from_url(url: str) -> ScrapedPerformer | None:
     #     name = name.text
     #     disambiguation = None
 
-    # Do not disambiguate names
-    name = name.get_text(strip=True)
-    disambiguation = None  
+    # Keep the GEVI code in the performer name (e.g. "John (SC4)")
+    # instead of using Stash's separate disambiguation field.  
+    raw_name = name.get_text(strip=True)
+    base_name, disambiguation = parse_name(raw_name)
+
+    if disambiguation:
+        name = f"{base_name} ({disambiguation})"
+    else:
+        name = base_name
 
     performer: ScrapedPerformer = {
         "name": name,
