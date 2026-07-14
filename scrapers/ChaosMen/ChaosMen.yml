@@ -28,7 +28,7 @@ sceneByQueryFragment:
     - ../Community/Algolia/Algolia.py
     - chaosmen
     - validName
-PerformerByURL:
+performerByURL:
   - action: script
     url:
       - chaosmen.com/en/model
@@ -36,7 +36,7 @@ PerformerByURL:
       - python
       - ../Community/Algolia/Algolia.py
       - chaosmen
-PerformerByFragment:
+performerByFragment:
   action: script
   script:
     - python
