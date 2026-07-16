@@ -124,7 +124,7 @@ hair_map = {
 
 # GEVI tracks skin color so there's no way to really know ethnicity
 ethnicity_map = {
-    "White": "Caucasian",
+    "Olive": "Latin",
 }
 
 def format_disambiguation(disamb: str) -> str:
