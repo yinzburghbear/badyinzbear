@@ -30,7 +30,7 @@ config = get_config(
 disambiguate_names = False
 
 # For aliases
-disambiguate_aliases = False
+disambiguate_aliases = True
 """
 )
 
@@ -125,6 +125,7 @@ hair_map = {
 # GEVI tracks skin color so there's no way to really know ethnicity
 ethnicity_map = {
     "Olive": "Latin",
+    "Caramel": "Latin",
 }
 
 def format_disambiguation(disamb: str) -> str:
@@ -164,18 +165,12 @@ def performer_from_url(url: str) -> ScrapedPerformer | None:
         log.error(f"Cannot find performer name in {url}")
         return None
 
-    # if config.disambiguate_names:
-    #     name, disambiguation = parse_name(name.text)
-    # else:
-    #     name = name.text
-    #     disambiguation = None
-
-    # Keep the GEVI code in the performer name (e.g. "John (SC4)")
-    # instead of using Stash's separate disambiguation field.  
+    # Parse and normalize any GEVI disambiguation code.
     raw_name = name.get_text(strip=True)
     base_name, disambiguation = parse_name(raw_name)
 
-    if disambiguation:
+    # Performer names omit the parenthesized GEVI code when configured false.
+    if config.disambiguate_names and disambiguation:
         name = f"{base_name} ({disambiguation})"
     else:
         name = base_name
@@ -232,11 +227,19 @@ def performer_from_url(url: str) -> ScrapedPerformer | None:
         	performer["details"] = bio.get_text(separator="\n")
 
     if aliases := soup.find_all("h2"):
-        if config.disambiguate_aliases:
-            performer["aliases"] = ", ".join(alias.text for alias in aliases)
-        else:
-            deduplicated = {parse_name(alias.text)[0] for alias in aliases}
-            performer["aliases"] = ", ".join(sorted(deduplicated))
+        formatted_aliases = set()
+
+        for alias in aliases:
+            base_alias, alias_disambiguation = parse_name(alias.get_text(strip=True))
+
+            if config.disambiguate_aliases and alias_disambiguation:
+                formatted_aliases.add(
+                    f"{base_alias} ({alias_disambiguation})"
+                )
+            else:
+                formatted_aliases.add(base_alias)
+
+        performer["aliases"] = ", ".join(sorted(formatted_aliases))
 
     return performer
 
