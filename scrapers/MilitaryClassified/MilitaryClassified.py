@@ -3,6 +3,12 @@ import re
 import sys
 import base64
 from datetime import datetime
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "Community")
+    ),
+)
 from py_common.deps import ensure_requirements
 ensure_requirements("cloudscraper", "lxml")
 try:
