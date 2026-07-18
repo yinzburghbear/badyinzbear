@@ -3,32 +3,44 @@ import re
 import sys
 import base64
 from datetime import datetime
+
+import os
+import sys
+
 sys.path.insert(
     0,
     os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..", "..", "Community")
     ),
 )
-from py_common.deps import ensure_requirements
-ensure_requirements("cloudscraper", "lxml")
-try:
-    import cloudscraper
-except ModuleNotFoundError:
-    print("You need to install the cloudscraper module. (https://pypi.org/project/cloudscraper/)", file=sys.stderr)
-    print("If you have pip (normally installed with python), run this command in a terminal (cmd): pip install cloudscraper", file=sys.stderr)
-    sys.exit()
 
-try:
-    from lxml import html, etree
-except ModuleNotFoundError:
-    print("You need to install the lxml module. (https://lxml.de/installation.html#installation)", file=sys.stderr)
-    print("If you have pip (normally installed with python), run this command in a terminal (cmd): pip install lxml", file=sys.stderr)
-    sys.exit()
-try:
-    from py_common import log
-except ModuleNotFoundError:
-    print("You need to download the folder 'py_common' from the community repo! (CommunityScrapers/tree/master/scrapers/py_common)", file=sys.stderr)
-    sys.exit()
+from py_common.deps import ensure_requirements
+
+ensure_requirements("cloudscraper", "lxml")
+
+import cloudscraper
+from lxml import html, etree
+
+from py_common import log
+# ensure_requirements("cloudscraper", "lxml")
+# try:
+#     import cloudscraper
+# except ModuleNotFoundError:
+#     print("You need to install the cloudscraper module. (https://pypi.org/project/cloudscraper/)", file=sys.stderr)
+#     print("If you have pip (normally installed with python), run this command in a terminal (cmd): pip install cloudscraper", file=sys.stderr)
+#     sys.exit()
+
+# try:
+#     from lxml import html, etree
+# except ModuleNotFoundError:
+#     print("You need to install the lxml module. (https://lxml.de/installation.html#installation)", file=sys.stderr)
+#     print("If you have pip (normally installed with python), run this command in a terminal (cmd): pip install lxml", file=sys.stderr)
+#     sys.exit()
+# try:
+#     from py_common import log
+# except ModuleNotFoundError:
+#     print("You need to download the folder 'py_common' from the community repo! (CommunityScrapers/tree/master/scrapers/py_common)", file=sys.stderr)
+#     sys.exit()
 
 # Define a list of special performer names that should preserve their capitalization
 SPECIAL_PERFORMER_NAMES = ["TJ", "JJ"]
