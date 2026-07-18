@@ -1,0 +1,10 @@
+id: MilitaryClassified
+name: MilitaryClassified
+metadata: {}
+version: 13b0a2b
+date: "2025-03-26 11:54:52"
+requires: []
+source_repository: https://stashapp.github.io/CommunityScrapers/stable/index.yml
+files:
+- MilitaryClassified.py
+- MilitaryClassified.yml
