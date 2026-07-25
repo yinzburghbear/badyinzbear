@@ -128,6 +128,15 @@ ethnicity_map = {
     "Caramel": "Latin",
 }
 
+country_map = {
+    "U.S.": "United States",
+    "U.K.": "United Kingdom",
+
+    # Historical / alternate names
+    "Holland": "Netherlands",
+    "West Germany": "Germany",
+}
+
 def format_disambiguation(disamb: str) -> str:
     # Keep short GEVI codes uppercase.
     if re.fullmatch(r"[A-Z0-9]{2,6}", disamb.upper()):
@@ -213,7 +222,9 @@ def performer_from_url(url: str) -> ScrapedPerformer | None:
         performer["ethnicity"] = ethnicity_map.get(skin_color, skin_color)  # type: ignore
 
     if country := from_table(soup, "From:"):
-        performer["country"] = guess_nationality(country)
+        performer["country"] = guess_nationality(
+            country_map.get(country, country)
+        )
 
     if birth_year := from_table(soup, "Born:"):
         # Unfortunately GEVI only tracks birth years, not full dates
