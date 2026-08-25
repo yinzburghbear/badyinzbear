@@ -1,0 +1,31 @@
+name: "ManSurfer"
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - mansurfer.com
+    scraper: sceneScraper
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //span[@typeof="v:Breadcrumb"]/span[@property="v:title"]
+      Details:
+        selector: //meta[@property="og:description"]/@content
+      Date:
+        selector: //b[normalize-space(.)="Added:"]/following-sibling::text()[1]
+        postProcess:
+          - parseDate: Jan 2, 2006 3:04pm
+      Image:
+        selector: //video[contains(@class, "html5videocode")]/@poster
+      Studio:
+        Name:
+          selector: //span[@typeof="v:Breadcrumb"]/a[contains(@href, "/channel/")]
+driver:
+  cookies:
+    - CookieURL: "https://www.mansurfer.com"
+      Cookies:
+        - Name: "AgreetoManSurferTermsy"
+          Domain: "www.mansurfer.com"
+          Value: "true"
+          Path: "/"
+# Last Updated August 25, 2026
