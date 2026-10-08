@@ -6,7 +6,12 @@ import sys
 import time
 from typing import Iterable, Callable, TypeVar
 from datetime import datetime
-
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "Community")
+    ),
+)
 from py_common.util import guess_nationality, scraper_args
 import py_common.log as log
 from py_common.deps import ensure_requirements
