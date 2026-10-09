@@ -1,0 +1,49 @@
+name: "Colby Knox"
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - colbyknox.com/videos/
+    scraper: sceneScraper
+
+xPathScrapers:
+  sceneScraper:
+    common:
+      $performer: //a[contains(@class, "video-model")]
+    scene:
+      Title: //div[contains(@class, "video")]//h1/text()
+      Date:
+        selector: //div[contains(@class, "video-frame")]//video/source/@src
+        postProcess:
+          - replace:
+              - regex: .*(\d{4})(\d{2})(\d{2})\d{6}.*
+                with: $1-$2-$3
+          - parseDate: 2006-01-02
+      Performers:
+        Name: $performer//h3/text()
+        URLs: $performer/@href
+      Details:
+        selector: //div[contains(@class, "video")]//p[contains(@class, "mb-5")]/text()
+        concat: "\n\n"
+      Image: //div[contains(@class, "video-frame")]//img[contains(@class, "background-img")]/@src
+      Studio:
+        Name:
+          fixed: Colby Knox
+
+driver:
+  useCDP: true
+  cookies:
+    - CookieURL: "https://colbyknox.com"
+      Cookies:
+        - Name: "_ck_av"
+          Domain: "colbyknox.com"
+          Value: "eyJ0aW1lIjoxNzg3NzAwMDcyLCJpZCI6InBob25lX2ZhY2YwMjlhMGVkZDk1MmE0YjJiNzRlYzE2YjgwNWY2Iiwic2lnIjoiYTc1ZDBkZjhmNGUyZmMwMjc2OTQ0MzQ1OGNiZWMzZDMxMjEyYzdiYjAxOGQ0MzUwYTcyNTE2NWNhN2I1NDhhMSJ9"
+          Path: "/"
+    - CookieURL: "colbyknox.com"
+      Cookies:
+        - Name: "nats_landing"
+          Domain: "colbyknox.com"
+          Value: "No%2BLanding%2BPage%2BURL"
+          Path: "/"
+
+# Last Updated September 17, 2025
+
