@@ -1,23 +1,25 @@
 name: Corbin Fisher
+# scrapes: Bi College Fucks, Corbin Fisher, Hot College Fucks
 sceneByURL:
   - action: scrapeXPath
     url:
+      - bicollegefucks.com
       - corbinfisher.com/sfw/trailers
       - corbinfisher.com/tour/trailers
+      - hotcollegefucks.com
     scraper: sceneScraper
-
 performerByURL:
   - action: scrapeXPath
     url:
+      - bicollegefucks.com/tour/models
       - corbinfisher.com/sfw/models
-      - corbinfisher.com/tour/
+      - corbinfisher.com/tour/models
+      - hotcollegefucks.com/tour/models
     scraper: performerScraper
-
 xPathScrapers:
   sceneScraper:
     scene:
-      Title:
-        selector: //h1
+      Title: //h1
       Date:
         selector: //div[@class="added"]
         postProcess:
@@ -29,37 +31,50 @@ xPathScrapers:
         Name: //div[@class="modelFeaturing"]//a
         URLs: //div[@class="modelFeaturing"]//a/@href
       Details:
+        # bicollegefucks uses <br> as a paragraph separator inside the single <p>
         selector: //div[@class="description"]/p//text() | //div[@class="description"]/p//br
         concat: "\n\n"
         postProcess:
           - replace:
               - regex: <br\s*\/?>
                 with: "\n"
-      # Intentionally disabled
-      # https://github.com/stashapp/CommunityScrapers/pull/2496
-      # https://discourse.stashapp.cc/t/sfw-vs-nsfw-covers/3712
+      # player-thumb is the scene's own cover; item-thumb is "more episodes"
       Image:
-        selector: //img[@height="815"]/@src0_1x
+        selector: //div[@class="player-thumb"]//img/@src0_1x
       Studio:
-        Name:
-          fixed: Corbin Fisher
+        # the sub-brand is only knowable from the page: an XPath scraper cannot
+        # see the request URL, and the logo alt matches the StashDB studio names
+        Name: &studio //img[contains(@src, "logo")][1]/@alt
       Tags:
         Name:
           selector: //head/link[@rel="canonical"]/@href
           postProcess:
             - replace:
-                - regex: .*-(remastered|REMASTERED)\..*
+                # Remasters are flagged only by the URL slug, -remastered or -rm
+                - regex: (?i).*-(remastered|rm)-?\.html.*
                   with: "Remaster,Re-Release"
             - replace:
                 - regex: ^http.*
                   with: ""
           split: ","
-
   performerScraper:
     performer:
       Name: //div[@class="modelBioDetails"]//h2/text()
       Gender:
-        fixed: Male
+        selector: |
+          //span[contains(text(),"COCK THICKNESS:")]/text()|
+          //span[contains(text(),"BREAST SIZE:")]/text()
+        concat: ","
+        postProcess:
+          - javascript: |
+              const values = value.split(",").map(v => v.trim()).filter(v => v);
+              if(values.some(v => v.includes("COCK THICKNESS:"))) {
+                return "Male"
+              }
+              if(values.some(v => v.includes("BREAST SIZE:"))) {
+                return "Female"
+              }
+              return ""
       HairColor: //span[contains(text(),"HAIR COLOR:")]/following-sibling::text()
       EyeColor: //span[contains(text(),"EYES:")]/following-sibling::text()
       Weight:
@@ -77,15 +92,45 @@ xPathScrapers:
               - regex: ^
                 with: "0'"
           - feetToCm: true
-      Measurements: //span[contains(text(),"COCK THICKNESS:")]/following-sibling::text()
-      Circumcised:
-        selector: //span[contains(text(),"CUT:")]/following-sibling::text() | //span[contains(text(),"AGE:")]/following-sibling::text()
+      Measurements:
+        selector: |
+          //span[contains(text(),"COCK THICKNESS:")]/text()|
+          //span[contains(text(),"COCK THICKNESS:")]/following-sibling::text()|
+          //span[contains(text(),"BREAST SIZE:")]/text()|
+          //span[contains(text(),"BREAST SIZE:")]/following-sibling::text() |
+          //span[contains(text(),"HIP SIZE:")]/text()|
+          //span[contains(text(),"HIP SIZE:")]/following-sibling::text()
+        concat: ","
         postProcess:
           - javascript: |
-              if (!value || value.match(/^\d+$/)) {  // Se è vuoto o contiene solo numeri (è l'età)
+              let pairs = [];
+              const values = value.split(",").map(v => v.trim()).filter(v => v);
+              for(let i = 0; i < values.length; i += 2) {
+                const label = values[i];
+                const val = values[i+1];
+                if(!val) continue;
+                const firstPart = val.toLowerCase().charAt(0).toUpperCase() + val.toLowerCase().slice(1);
+                if(label.includes("COCK THICKNESS:")) {
+                  return firstPart;
+                }
+                else {
+                  pairs.push(firstPart);
+                }
+              }
+              return pairs.join("-");
+      Circumcised:
+        selector: //span[contains(text(),"CUT:")]/following-sibling::text() | //span[contains(text(),"COCK THICKNESS:")]/text()
+        concat: ","
+        postProcess:
+          - javascript: |
+              const values = value.split(",").map(v => v.trim()).filter(v => v);
+              if (values.some(v => v.includes("YES"))) {
+                return "CUT"
+              }
+              if (values.some(v => v.includes("COCK THICKNESS:"))) {
                 return "UNCUT"
               }
-              return value.toUpperCase().includes("YES") ? "CUT" : "UNCUT"
+              return ""
       Details:
         selector: //div[@class="modelContent"]/node()
         concat: "\n"
@@ -93,11 +138,8 @@ xPathScrapers:
           - replace:
               - regex: <br\s*\/?>
                 with: "\n"
-      Disambiguation:
-        fixed: Corbin Fisher
-      FakeTits:
-        fixed: Natural
-      Image: //div[@class="modelBioPic"]/img/@src0_1x
+      Disambiguation: *studio
+      Images: //div[@class="modelBioPic"]/img/@src0_1x
       Tags:
         Name:
           selector: |
@@ -110,54 +152,79 @@ xPathScrapers:
             //span[contains(text(),"CUT:")]/text() | //span[contains(text(),"AGE:")][not(//span[contains(text(),"CUT:")])]/text()|
             //span[contains(text(),"CUT:")]/following-sibling::text() | //span[contains(text(),"AGE:")][not(//span[contains(text(),"CUT:")])]/following-sibling::text()|
             //span[contains(text(),"COCK THICKNESS:")]/text()|
-            //span[contains(text(),"COCK THICKNESS:")]/following-sibling::text()
+            //span[contains(text(),"COCK THICKNESS:")]/following-sibling::text()|
+            //span[contains(text(),"BREAST SIZE:")]/text()|
+            //span[contains(text(),"BREAST SIZE:")]/following-sibling::text()|
+            //span[contains(text(),"HIP SIZE:")]/text()|
+            //span[contains(text(),"HIP SIZE:")]/following-sibling::text()
           concat: ","
           postProcess:
             - javascript: |
                 let pairs = [];
                 const values = value.split(",").map(v => v.trim()).filter(v => v);
 
-                // Aggiungiamo subito il tag Corbin Fisher
-                pairs.push("Corbin Fisher");
+
+                // studio tag comes from the page, so one scraper serves every sub-brand
+
+                // Determiniamo il genere
+                const isMale = values.some(v => v.includes("COCK THICKNESS:"));
+                const isFemale = values.some(v => v.includes("BREAST SIZE:"));
 
                 for(let i = 0; i < values.length; i += 2) {
                   const label = values[i];
                   const val = values[i+1];
                   if(!val) continue;
-                  
+
                   const firstPart = val.toLowerCase().charAt(0).toUpperCase() + val.toLowerCase().slice(1);
-                  
-                  if(label.includes("AGE:")) {
-                    pairs.push("Uncircumcised");
-                    continue;
-                  }
-                  
+
+                  // Tag comuni a entrambi i generi
                   if(label.includes("EYES:")) {
                     pairs.push(firstPart + " Eyes");
                   }
                   else if(label.includes("HAIR COLOR:")) {
                     pairs.push(firstPart + " Hair");
                   }
-                  else if(label.includes("CUT:")) {
-                    pairs.push(val.toUpperCase().includes("YES") ? "Circumcised" : "Uncircumcised");
-                  }
                   else if(label.includes("BODY BUILD:")) {
                     const bodyTypes = {
+                      // Tipi maschili
                       "ATHLETIC": "Athletic",
                       "SLIM": "Slim",
                       "AVERAGE": "Average",
                       "MUSCULAR": "Muscular",
-                      "TONED": "Athletic"
+                      "TONED": "Athletic",
+                      // Tipi femminili
+                      "PETITE": "Petite",
+                      "CURVY": "Curvy",
+                      "VOLUPTUOUS": "Voluptuous",
+                      "THIN": "Slim",
+                      "FIT": "Athletic"
                     };
                     pairs.push(bodyTypes[val.trim().toUpperCase()] || firstPart);
                   }
-                  else if(label.includes("COCK THICKNESS:")) {
-                    pairs.push(firstPart + " Dick");
+
+                  // Tag specifici per uomini
+                  if(isMale) {
+                    if(label.includes("AGE:") && !values.some(v => v.includes("CUT:"))) {
+                      // only when the page actually publishes genital data
+                      if(values.some(v => v.includes("COCK THICKNESS:"))) pairs.push("Uncircumcised");
+                    }
+                    else if(label.includes("CUT:")) {
+                      pairs.push(val.toUpperCase().includes("YES") ? "Circumcised" : "Uncircumcised");
+                    }
+                    else if(label.includes("COCK THICKNESS:")) {
+                      pairs.push(firstPart + " Dick");
+                    }
+                  }
+
+                  // Tag specifici per donne
+                  if(isFemale) {
+                    if(label.includes("BREAST SIZE:")) {
+                      pairs.push(firstPart + " Breasts");
+                    }
+                    if(label.includes("HIP SIZE:")) {
+                      pairs.push(firstPart + " Hips");
+                    }
                   }
                 }
                 return pairs.join(",");
           split: ","
-
-driver:
-  useCDP: true
-# Last Updated 7/9/2026
